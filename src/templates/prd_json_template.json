@@ -1,0 +1,20 @@
+{
+  "project": "{project_name}",
+  "branchName": "{branch_name}",
+  "description": "{project_description}",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Initial setup",
+      "description": "As a developer, I want to set up the project structure so that I can start development.",
+      "acceptanceCriteria": [
+        "Project structure is created",
+        "Dependencies are installed",
+        "Basic configuration is in place"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}
