@@ -1,0 +1,42 @@
+# Source files
+src/
+target/
+Cargo.toml
+Cargo.lock
+
+# Development files
+.git/
+.gitignore
+.github/
+
+# Documentation (included in README, not needed in package)
+*.md
+!README.md
+
+# Test files
+tests/
+*.test.js
+
+# Build artifacts
+*.log
+npm-debug.log*
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Ralph workspace (not needed in npm package)
+ralph/
+progress.txt
+prd.json
+
+# The binary will be downloaded during install
+bin/ralph
+bin/ralph.exe

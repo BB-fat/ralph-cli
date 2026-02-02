@@ -12,9 +12,19 @@ Ralph 最大的特点：**让 AI agent 不断尝试，直到完成任务**
 - **失败重试**：遇到错误时自动继续，直到成功或达到最大迭代次数
 - **完成信号**：Agent 输出 `<promise>COMPLETE</promise>` 信号时自动停止
 
-## Workflow
+## 安装
 
-### 步骤 1: 安装 Ralph CLI
+### 方式 1：通过 npm 安装（推荐）
+
+```bash
+# 全局安装
+npm install -g ralph-cli
+
+# 或使用 npx 无需安装
+npx ralph-cli <command>
+```
+
+### 方式 2：从源码构建
 
 ```bash
 # 克隆仓库
@@ -26,6 +36,27 @@ cargo build --release
 
 # 安装到系统（可选）
 cargo install --path .
+```
+
+### 离线安装
+
+对于没有互联网访问的环境：
+
+```bash
+# 首先从 GitHub Releases 下载适合你平台的二进制文件
+# 然后使用本地二进制文件路径安装
+npm install -g ralph-cli --ralph-binary-path=/path/to/ralph
+
+# 或使用环境变量
+RALPH_BINARY_PATH=/path/to/ralph npm install -g ralph-cli
+```
+
+## 工作流
+
+### 步骤 1: 验证安装
+
+```bash
+ralph --version
 ```
 
 ### 步骤 2: 检查和安装 AI Agents
@@ -170,6 +201,50 @@ ralph config set auto_archive true
 | `default_tool` | string | `null` | 默认 AI 工具（amp/claude/codebuddy） |
 | `max_iterations` | integer | `10` | 每次运行的最大迭代次数 |
 | `auto_archive` | boolean | `true` | 切换分支时自动归档 |
+
+## 故障排除
+
+### 安装问题
+
+**npm 安装期间二进制文件下载失败**
+
+```
+npm ERR! Installation failed: Error: Failed to download: 404
+```
+
+**解决方案：**
+1. 检查网络连接
+2. 确认 GitHub 上存在该版本的发布
+3. 使用离线安装方式，使用预下载的二进制文件：
+   ```bash
+   npm install -g ralph-cli --ralph-binary-path=/path/to/ralph
+   ```
+
+**运行 ralph 时权限被拒绝**
+
+```bash
+# 在 Linux/macOS 上，确保二进制文件可执行
+chmod +x $(npm root -g)/ralph-cli/bin/ralph
+```
+
+**安装后找不到二进制文件**
+
+```bash
+# 重新安装包
+npm uninstall -g ralph-cli
+npm install -g ralph-cli
+
+# 或手动从 GitHub Releases 下载适合你平台的二进制文件
+# 并将其放入 npm 包的 bin/ 目录中
+```
+
+### 平台支持
+
+Ralph CLI npm 包支持：
+- **macOS**: Intel (x64) 和 Apple Silicon (arm64)
+- **Linux**: x64 和 ARM64
+
+Windows 目前不支持通过 npm 安装。请使用 WSL 或从源码构建。
 
 ## License
 
