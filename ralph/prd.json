@@ -82,8 +82,8 @@
         "Typecheck/lint 通过"
       ],
       "priority": 5,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Implementation already existed in npm/install.js with both RALPH_BINARY_PATH environment variable and --ralph-binary-path npm config option. Documentation already exists in README.md and README_zh.md."
     },
     {
       "id": "US-006",

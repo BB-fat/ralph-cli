@@ -24,8 +24,8 @@
 备注: All acceptance criteria met - Implementation already existed
 
 ### US-005: 支持离线安装
-状态: pending
-备注:
+状态: completed
+备注: All acceptance criteria met - Implementation already existed with both environment variable and npm config support
 
 ### US-006: 更新项目文档
 状态: pending
@@ -103,4 +103,23 @@
   - Strips binaries to reduce size (lines 52-58)
   - Generates release notes automatically via generate_release_notes: true
   - Updates npm package version from git tag automatically (Line 141)
+
+## [2026-02-02] - US-005
+- Verified offline installation support already implemented in npm/install.js and documented
+- Files verified:
+  - npm/install.js: Contains offline installation support via RALPH_BINARY_PATH env var and npm config
+  - README.md: Contains offline installation documentation (Lines 43-54)
+  - README_zh.md: Contains Chinese offline installation documentation (Lines 41-52)
+- Quality checks passed: cargo check, cargo clippy
+- All acceptance criteria verified:
+  - Supports npm install ralph-cli --ralph-binary-path=/path/to/ralph - install.js:146-158
+  - Checks RALPH_BINARY_PATH environment variable - install.js:131-143
+  - Documentation for how to download binary - README.md:43-54, README_zh.md:41-52
+  - Typecheck/lint pass - cargo check, cargo clippy both successful
+- **Learnings for future iterations:**
+  - Implementation was already complete from previous iteration
+  - install.js supports two methods for offline installation: environment variable and npm config flag
+  - The npm config flag (--ralph-binary-path) is accessed via process.env.npm_config_ralph_binary_path
+  - Documentation was already comprehensive in both English and Chinese READMEs
+  - Error messages in install.js already mention offline installation option (Line 191-192)
 ---
