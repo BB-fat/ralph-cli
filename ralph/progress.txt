@@ -20,8 +20,8 @@
 备注: All acceptance criteria met - Implementation already existed
 
 ### US-004: 配置 GitHub Actions 自动发布
-状态: pending
-备注:
+状态: completed
+备注: All acceptance criteria met - Implementation already existed
 
 ### US-005: 支持离线安装
 状态: pending
@@ -82,4 +82,25 @@
   - Implementation was already complete from previous iteration
   - index.js includes additional signal handling (SIGINT, SIGTERM) for graceful shutdown
   - The wrapper provides helpful error messages including offline installation instructions
+
+## [2026-02-02] - US-004
+- Verified GitHub Actions workflow for automatic publishing in .github/workflows/release.yml
+- Files verified:
+  - .github/workflows/release.yml: Complete release workflow with multi-platform builds
+- All acceptance criteria verified:
+  - Creates release.yml workflow - File exists at Lines 1-150
+  - Builds macOS Intel (x86_64-apple-darwin) - Lines 19-21
+  - Builds macOS Apple Silicon (aarch64-apple-darwin) - Lines 22-24
+  - Builds Linux x64 (x86_64-unknown-linux-gnu) - Lines 25-27
+  - Builds Linux ARM64 (aarch64-unknown-linux-gnu) - Lines 28-30
+  - Uploads all binaries to GitHub Release - Lines 111-120
+  - Generates SHA256 checksum files for each platform - Lines 60-64, 73-78
+  - Auto-triggers npm publish after GitHub Release - Lines 122-149
+- **Learnings for future iterations:**
+  - Implementation was already complete from previous iteration
+  - Workflow includes cross-compilation setup for Linux ARM64 (aarch64-linux-gnu-gcc)
+  - Uses matrix strategy for parallel builds across platforms
+  - Strips binaries to reduce size (lines 52-58)
+  - Generates release notes automatically via generate_release_notes: true
+  - Updates npm package version from git tag automatically (Line 141)
 ---
