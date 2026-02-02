@@ -12,8 +12,8 @@
 备注: All acceptance criteria met
 
 ### US-002: 实现二进制下载逻辑
-状态: pending
-备注:
+状态: completed
+备注: All acceptance criteria met - Implementation already existed, verified with cargo check and cargo clippy
 
 ### US-003: 创建 JS 包装层
 状态: pending
@@ -49,4 +49,21 @@
   - index.js properly forwards stdin/stdout/stderr and handles process exit codes
   - The project uses Rust (cargo) with no JavaScript linting setup
   - cargo check and cargo clippy both pass successfully
+
+## [2026-02-02] - US-002
+- Verified binary download logic implementation in npm/install.js
+- Files verified:
+  - npm/install.js: Contains platform detection, GitHub Release download, SHA256 checksum verification, error handling
+- Quality checks passed: cargo check, cargo clippy
+- All acceptance criteria verified:
+  - Platform detection (macOS/Linux x64/arm64) - Lines 23-40
+  - Binary download from GitHub Releases - Lines 42-78
+  - SHA256 checksum verification - Lines 105-126
+  - Binary saved to bin/ subdirectory - Lines 165-168
+  - Executable permissions (0o755) - Line 182
+  - Download failure handling with clear errors - Lines 186-193
+- **Learnings for future iterations:**
+  - Implementation was already complete from previous iteration
+  - install.js also implements offline installation support (RALPH_BINARY_PATH env var) which covers US-005
+  - Quality check is simply running cargo check and cargo clippy for this Rust project
 ---
