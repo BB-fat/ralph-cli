@@ -1,5 +1,5 @@
 {
-  "name": "ralph-cli",
+  "name": "@bbfat/ralph-cli",
   "version": "0.1.0",
   "description": "Ralph CLI - AI Agent continuous execution engine for automatic iteration and task completion",
   "main": "index.js",
