@@ -29,6 +29,7 @@
     "url": "https://github.com/BB-fat/ralph-cli/issues"
   },
   "homepage": "https://github.com/BB-fat/ralph-cli#readme",
+  "readme": "README.md",
   "engines": {
     "node": ">=14.0.0"
   },
