@@ -49,7 +49,7 @@
         "Typecheck/lint 通过"
       ],
       "priority": 3,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
