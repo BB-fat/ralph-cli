@@ -18,7 +18,7 @@ Ralph 最大的特点：**让 AI agent 不断尝试，直到完成任务**
 
 ```bash
 # 全局安装
-npm install -g ralph-cli
+npm install -g @bbfat/ralph-cli
 
 # 或使用 npx 无需安装
 npx ralph-cli <command>

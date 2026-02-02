@@ -20,7 +20,7 @@ Ralph's standout feature: **Make AI agents keep trying until they complete the t
 
 ```bash
 # Global installation
-npm install -g ralph-cli
+npm install -g @bbfat/ralph-cli
 
 # Or use npx without installing
 npx ralph-cli <command>
