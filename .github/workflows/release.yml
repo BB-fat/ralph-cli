@@ -1,0 +1,149 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  # Build binaries for all platforms
+  build-binaries:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-apple-darwin
+            os: macos-latest
+            arch: x86_64
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            arch: aarch64
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            arch: x86_64
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+            arch: aarch64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install cross-compilation tools (Linux ARM64)
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+
+      - name: Build binary
+        run: cargo build --release --target ${{ matrix.target }}
+        env:
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+
+      - name: Strip binary (macOS)
+        if: startsWith(matrix.os, 'macos')
+        run: strip target/${{ matrix.target }}/release/ralph
+
+      - name: Strip binary (Linux)
+        if: startsWith(matrix.os, 'ubuntu')
+        run: strip target/${{ matrix.target }}/release/ralph || true
+
+      - name: Calculate SHA256 checksum
+        run: |
+          cd target/${{ matrix.target }}/release
+          sha256sum ralph > ralph.sha256
+          cat ralph.sha256
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ralph-${{ matrix.target }}
+          path: target/${{ matrix.target }}/release/ralph
+          retention-days: 1
+
+      - name: Upload checksum artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ralph-${{ matrix.target }}.sha256
+          path: target/${{ matrix.target }}/release/ralph.sha256
+          retention-days: 1
+
+  # Create GitHub Release and upload assets
+  create-release:
+    name: Create GitHub Release
+    needs: build-binaries
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: ralph-*
+
+      - name: Organize artifacts
+        run: |
+          mkdir -p release-assets
+          for dir in artifacts/ralph-*/; do
+            target=$(basename "$dir")
+            if [[ "$target" == *.sha256 ]]; then
+              cp "$dir"ralph.sha256 "release-assets/${target}.sha256"
+            else
+              cp "$dir"ralph "release-assets/${target}"
+            fi
+          done
+          ls -la release-assets/
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release-assets/*
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Publish to npm
+  publish-npm:
+    name: Publish to npm
+    needs: create-release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Update package version
+        working-directory: ./npm
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "Updating package version to $VERSION"
+          npm version $VERSION --no-git-tag-version
+
+      - name: Publish to npm
+        working-directory: ./npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

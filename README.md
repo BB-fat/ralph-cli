@@ -14,9 +14,19 @@ Ralph's standout feature: **Make AI agents keep trying until they complete the t
 - **Failure Retry**: Automatically continue when errors occur until successful or maximum iterations are reached
 - **Completion Signal**: Automatically stops when the agent outputs the `<promise>COMPLETE</promise>` signal
 
-## Workflow
+## Installation
 
-### Step 1: Install Ralph CLI
+### Option 1: Install via npm (Recommended)
+
+```bash
+# Global installation
+npm install -g ralph-cli
+
+# Or use npx without installing
+npx ralph-cli <command>
+```
+
+### Option 2: Build from Source
 
 ```bash
 # Clone repository
@@ -28,6 +38,27 @@ cargo build --release
 
 # Install to system (optional)
 cargo install --path .
+```
+
+### Offline Installation
+
+For environments without internet access:
+
+```bash
+# Download the binary for your platform from GitHub Releases first
+# Then install with the local binary path
+npm install -g ralph-cli --ralph-binary-path=/path/to/ralph
+
+# Or use environment variable
+RALPH_BINARY_PATH=/path/to/ralph npm install -g ralph-cli
+```
+
+## Workflow
+
+### Step 1: Verify Installation
+
+```bash
+ralph --version
 ```
 
 ### Step 2: Check and Install AI Agents
@@ -172,6 +203,50 @@ ralph config set auto_archive true
 | `default_tool` | string | `null` | Default AI tool (amp/claude/codebuddy) |
 | `max_iterations` | integer | `10` | Maximum iterations per run |
 | `auto_archive` | boolean | `true` | Automatically archive when switching branches |
+
+## Troubleshooting
+
+### Installation Issues
+
+**Binary download fails during npm install**
+
+```
+npm ERR! Installation failed: Error: Failed to download: 404
+```
+
+**Solutions:**
+1. Check your internet connection
+2. Verify the release version exists on GitHub
+3. Use offline installation with a pre-downloaded binary:
+   ```bash
+   npm install -g ralph-cli --ralph-binary-path=/path/to/ralph
+   ```
+
+**Permission denied when running ralph**
+
+```bash
+# On Linux/macOS, ensure the binary is executable
+chmod +x $(npm root -g)/ralph-cli/bin/ralph
+```
+
+**Binary not found after installation**
+
+```bash
+# Reinstall the package
+npm uninstall -g ralph-cli
+npm install -g ralph-cli
+
+# Or manually download the binary for your platform from GitHub Releases
+# and place it in the npm package's bin/ directory
+```
+
+### Platform Support
+
+Ralph CLI npm package supports:
+- **macOS**: Intel (x64) and Apple Silicon (arm64)
+- **Linux**: x64 and ARM64
+
+Windows is not currently supported via npm. Use WSL or build from source.
 
 ## License
 
