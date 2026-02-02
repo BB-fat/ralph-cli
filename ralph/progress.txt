@@ -28,8 +28,8 @@
 备注: All acceptance criteria met - Implementation already existed with both environment variable and npm config support
 
 ### US-006: 更新项目文档
-状态: pending
-备注:
+状态: completed
+备注: All acceptance criteria met - Documentation already existed with npm installation instructions and troubleshooting guides in both languages
 
 ## 完成总结
 
@@ -122,4 +122,23 @@
   - The npm config flag (--ralph-binary-path) is accessed via process.env.npm_config_ralph_binary_path
   - Documentation was already comprehensive in both English and Chinese READMEs
   - Error messages in install.js already mention offline installation option (Line 191-192)
+
+## [2026-02-02] - US-006
+- Verified npm documentation already exists in both README files
+- Files verified:
+  - README.md: Contains npm installation (Lines 19-27), troubleshooting (Lines 207-249), platform support
+  - README_zh.md: Contains npm installation (Lines 17-25), troubleshooting (Lines 205-247), platform support
+- Quality checks passed: cargo check, cargo clippy
+- All acceptance criteria verified:
+  - npm installation instructions in README.md - Lines 19-27
+  - npm installation instructions in Chinese README_zh.md - Lines 17-25
+  - Both global installation and npx usage documented - Both READMEs show both methods
+  - Troubleshooting guide with download failures, permission issues - Both have comprehensive sections
+  - Update CHANGELOG if exists - No CHANGELOG file in project (N/A)
+- **Learnings for future iterations:**
+  - Documentation was already complete from previous iteration
+  - Both README.md and README_zh.md have identical structure and coverage
+  - Troubleshooting sections cover: binary download failures, permission denied, binary not found
+  - Platform support section documents supported OS/architecture combinations
+  - No CHANGELOG file exists in the project - it's a simple project without detailed version history tracking
 ---
