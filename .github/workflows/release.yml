@@ -121,6 +121,8 @@ jobs:
 
   # Publish to npm
   publish-npm:
+    environment:
+      name: release
     name: Publish to npm
     needs: create-release
     runs-on: ubuntu-latest
